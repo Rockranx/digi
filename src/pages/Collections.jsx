@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { BsFacebook, BsYoutube, BsLinkedin, BsTwitter } from "react-icons/bs";
 import { Link, NavLink, useParams } from "react-router-dom";
 import logo from "../images/images/logo.png";
 import logow from "../images/images/logow.png";
-import logoh from "../images/images/logoh.png";
-import one from "../images/images/items/one.jpg";
 import { FaDiscord, FaSquareXTwitter } from "react-icons/fa6";
-import fifteen from "../images/images/items/fifteen.jpg";
-import sixteen from "../images/images/items/sixteen.jpg";
-import seventeen from "../images/images/items/seventeen.jpg";
-import eighteen from "../images/images/items/eighteen.jpg";
-import nineteen from "../images/images/items/nineteen.jpg";
-import twenty from "../images/images/items/twenty.jpg";
-import i from "../images/images/avatar/i.jpg";
 import Loader from "./buttons&loaders/Loader";
 import Web3 from "web3";
 const Collections = ({ API, HASH }) => {
@@ -348,7 +338,7 @@ const Collections = ({ API, HASH }) => {
 
                             <div className="row">
                               {item.map((ith, indexs) => {
-                                // console.log(ith);
+                                console.log(ith); 
                                 return (
                                   <>
                                     <div
@@ -371,9 +361,21 @@ const Collections = ({ API, HASH }) => {
                                             />
                                           </div>
                                           <NavLink to="/item">
+                                            <div className="itemTitle">
+
                                             <h4 className="card-title">
-                                              {ith.name}
+                                              {ith.collection.name} #{ith.tokenId}
                                             </h4>
+                                            {/* <div className="tokenId">
+
+                                            <h4 className="card-title">
+                                              Token Id:
+                                            </h4>
+                                            <h4 className="card-title">
+                                              {ith.tokenId}
+                                            </h4>
+                                            </div> */}
+                                            </div>
                                           </NavLink>
                                           {/* <div className="d-flex justify-content-between">
                                             <div className="text-start">
@@ -401,7 +403,7 @@ const Collections = ({ API, HASH }) => {
                                               className="btn btn-primary"
                                               to={`/item/${ith.contract.address}/${ith.tokenId}`}
                                             >
-                                              Place a Bid
+                                              View Item
                                             </NavLink>
                                           </div>
                                         </div>

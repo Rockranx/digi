@@ -9,6 +9,7 @@ import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import Footer from "./pages/Footer";
 import ErrorPage from "./pages/ErrorPage";
+import Test from "./pages/Test";
 // import { Alchemy, Network } from "alchemy-sdk";
 function App() {
   const [userAddress, setUserAddress] = useState("");
@@ -179,13 +180,74 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const fetchData = async () => {
+      setBannerisLoading(false);
+      const options = {
+        method: "GET",
+        headers: { accept: "application/json", "X-API-KEY": HASH },
+      };
+      try {
+        // const response = await fetch(
+        //   // `/api/getNftData/ethereum/${contractAddress}/${tokenId}`,
+
+        //   {
+        //     headers: {
+        //       Accept: "application/json",
+        //     },
+        //   }
+        // );
+        // deal with the chain issue
+        const response = await fetch(
+          `https://api.simplehash.com/api/v0/nfts/collections/trending?chains=ethereum&time_period=7d&limit=15`,
+          options
+        );
+        // console.log("requested");
+        const data = await response.json();
+        // console.log(data);
+        setBanners(data.collections);
+        setBannerisLoading(true);
+        // console.log(nftsdetails);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      // setBannerisLoading(false);
+      const options = {
+        method: "GET",
+        headers: { accept: "application/json", "X-API-KEY": HASH },
+      };
+      setTrendingisLoading(false);
+      try {
+        // deal with the chain issue
+        const response = await fetch(
+          `https://api.simplehash.com/api/v0/nfts/collections/top_v2?chains=ethereum&time_period=7d&limit=12`,
+          options
+        );
+        const data = await response.json();
+        console.log(data);
+        setTrendingData(data.collections);
+        setTrendingisLoading(true);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     async function fetchData() {
       setBannerisLoading(false);
       const response1 = await fetchContractMetaData(DISPLAY1);
       const response2 = await fetchContractMetaData(DISPLAY2);
       const response3 = await fetchContractMetaData(DISPLAY3);
       const response4 = await fetchContractMetaData(DISPLAY4);
-      setBanners([response1, response2, response3, response4]);
+      // setBanners([response1, response2, response3, response4]);
       setBannerisLoading(true);
     }
 
@@ -209,18 +271,18 @@ function App() {
       const response11 = await fetchContractMetaData(TopCollection11);
       const response12 = await fetchContractMetaData(TopCollection12);
 
-      setTrendingData([
-        response1,
-        response3,
-        response4,
-        response5,
-        response6,
-        response8,
-        response9,
-        response10,
-        response11,
-        response12,
-      ]);
+      // setTrendingData([
+      //   response1,
+      //   response3,
+      //   response4,
+      //   response5,
+      //   response6,
+      //   response8,
+      //   response9,
+      //   response10,
+      //   response11,
+      //   response12,
+      // ]);
       setTrendingisLoading(true);
     }
 
@@ -353,13 +415,16 @@ function App() {
           />
           <Route
             path="/collection/:collectionSlug"
-            element={<Collections API={API} userAddress={userAddress} HASH={HASH}/>}
+            element={
+              <Collections API={API} userAddress={userAddress} HASH={HASH} />
+            }
           />
           <Route
             path="/item/:contractAddress/:tokenId"
-            element={<Item API={API} HASH={HASH}/>}
+            element={<Item API={API} HASH={HASH} />}
           />
           <Route exact path="*" element={<ErrorPage />} />
+          <Route exact path="/test" element={<Test />} />
         </Routes>
         <Footer />
       </BrowserRouter>

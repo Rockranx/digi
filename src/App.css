@@ -15219,6 +15219,18 @@ button:active,
   .Desktop{
     display: none;
   }
+  .itemTitle{
+    display: flex;
+    flex-direction: column;
+  }
+  .tokenId{
+    width: 100%;
+    /* border: 2px solid red; */
+    display: flex;
+    flex-direction: row;
+    padding: 3px;
+    justify-content: space-between;
+  }
 }
 @media (max-width: 768px) {
   .modi{
@@ -15301,6 +15313,13 @@ button:active,
     grid-template-columns: auto auto;
   }
   .card .card-body {
-    padding: 0;
+    /* padding: 0;  */
+
+  }
+  .mobycard{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
   }
 }

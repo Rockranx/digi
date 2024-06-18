@@ -6,12 +6,12 @@ import Loader from "./buttons&loaders/Loader";
 import { ethers } from "ethers";
 import "./ss.css";
 const Item = ({ API, HASH }) => {
+  const { contractAddress, tokenId } = useParams();
   const [nftOwner, setNftOwner] = useState([]);
   const [currentNft, setCurrentNft] = useState([]);
   const [currentNftLoading, setCurrentNftLoading] = useState("");
   const [traitstab, setTraitstab] = useState(false);
   const [traitsdetails, setTraitsdetails] = useState([]);
-  const { contractAddress, tokenId } = useParams();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isdetailsExpanded, setIsdetailsExpanded] = useState(false);
   const [islistingExpanded, setIslistingExpanded] = useState(false);
@@ -57,13 +57,28 @@ const Item = ({ API, HASH }) => {
   }, []);
   useEffect(() => {
     const fetchData = async () => {
+      const options = {
+        method: "GET",
+        headers: { accept: "application/json", "X-API-KEY": HASH },
+      };
       try {
+        // const response = await fetch(
+        //   // `/api/getNftData/ethereum/${contractAddress}/${tokenId}`,
+
+        //   {
+        //     headers: {
+        //       Accept: "application/json",
+        //     },
+        //   }
+        // );
+        // deal with the chain issue
         const response = await fetch(
-          `/api/getNftData/ethereum/${contractAddress}/${tokenId}`
+          `https://api.simplehash.com/api/v0/nfts/ethereum/${contractAddress}/${tokenId}`,
+          options
         );
-        console.log("requested")
+        // console.log("requested");
         const data = await response.json();
-        console.log("gotten")
+        // console.log(data);
         setNftsdetails(data);
         // console.log(nftsdetails);
       } catch (error) {
@@ -78,13 +93,27 @@ const Item = ({ API, HASH }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const options = {
+        method: "GET",
+        headers: { accept: "application/json", "X-API-KEY": HASH },
+      };
       try {
         setIsFetchdata(false);
+        // const response = await fetch(
+        //   `/api/getNftListing/ethereum/${contractAddress}/${tokenId}`,
+        //   {
+        //     headers: {
+        //       Accept: "application/json",
+        //     },
+        //   }
+        //   // `http://localhost:3000/getNftListing/ethereum/${contractAddress}/${tokenId}`
+        // );
         const response = await fetch(
-          `/api/getNftListing/ethereum/${contractAddress}/${tokenId}`
-          // `http://localhost:3000/getNftListing/ethereum/${contractAddress}/${tokenId}`
+          `https://api.simplehash.com/api/v0/nfts/listings/ethereum/${contractAddress}/${tokenId}?marketplaces=opensea&order_by=listing_timestamp_desc&limit=50`,
+          options
         );
         const data = await response.json();
+        // console.log(data)
         if (data.listings.length === 0) {
           console.log(data.listings.length);
           setNoNftsListings(true);
@@ -131,13 +160,27 @@ const Item = ({ API, HASH }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const options = {
+        method: "GET",
+        headers: { accept: "application/json", "X-API-KEY": HASH },
+      };
       try {
         setIsFetchdata(false);
+        // const response = await fetch(
+        //   `/api/getNftTrans/ethereum/${contractAddress}/${tokenId}`,
+        //   {
+        //     headers: {
+        //       Accept: "application/json",
+        //     },
+        //   }
+        //   // `http://localhost:3000/getNftTrans/ethereum/${contractAddress}/${tokenId}`
+        // );
         const response = await fetch(
-          `/api/getNftTrans/ethereum/${contractAddress}/${tokenId}`
-          // `http://localhost:3000/getNftTrans/ethereum/${contractAddress}/${tokenId}`
+          `https://api.simplehash.com/api/v0/nfts/transfers/ethereum/${contractAddress}/${tokenId}?order_by=timestamp_desc&limit=100`,
+          options
         );
         const data = await response.json();
+        // console.log(data)
         setTransData(data.transfers);
         // setIsFetchdata(true);
         // console.log(data);
@@ -154,6 +197,7 @@ const Item = ({ API, HASH }) => {
   let nftconshort2 = contractAddress.slice(38);
 
   // console.log(nftconshort1)
+
   async function fetchSpecificNftMetaData(contractAddress, tokenIds) {
     const options = {
       method: "GET",
@@ -233,50 +277,49 @@ const Item = ({ API, HASH }) => {
                               <div className="row">
                                 <div className="col-md-6">
                                   <div className="Desktop modi">
-
-                                <h5 className="mb-3">
-                                    <Link
-                                      to={`/collection/${item.contract.openSeaMetadata.collectionSlug}`}
-                                    >
-                                      {" "}
-                                      {
-                                        item.contract.openSeaMetadata
-                                          .collectionName
-                                      }{" "}
-                                    </Link>
-                                  </h5>
-                                  <h3 className="mb-3"> {item.name} </h3>
-                                  <div className="d-flex align-items-center mb-3">
-                                    <div className="flex-grow-1">
-                                      <div className="nfttitle">
-                                        <h6 className="mb-0">Owner</h6>
-                                        {nftOwner.map((owner, indexes) => {
-                                          // console.log(owner)
-                                          let owner1 = owner.owners[0].slice(
-                                            0,
-                                            5
-                                          );
-                                          let owner2 =
-                                            owner.owners[0].slice(38);
-                                          // console.log(owner1)
-                                          return (
-                                            <>
-                                              <h5
-                                                className="mb-0"
-                                                key={indexes}
-                                              >
-                                                <Link
-                                                  to={`https://etherscan.io/address/${owner.owners[0]}`}
+                                    <h5 className="mb-3">
+                                      <Link
+                                        to={`/collection/${item.contract.openSeaMetadata.collectionSlug}`}
+                                      >
+                                        {" "}
+                                        {
+                                          item.contract.openSeaMetadata
+                                            .collectionName
+                                        }{" "}
+                                      </Link>
+                                    </h5>
+                                    <h3 className="mb-3"> {item.name} </h3>
+                                    <div className="d-flex align-items-center mb-3">
+                                      <div className="flex-grow-1">
+                                        <div className="nfttitle">
+                                          <h6 className="mb-0">Owner</h6>
+                                          {nftOwner.map((owner, indexes) => {
+                                            // console.log(owner)
+                                            let owner1 = owner.owners[0].slice(
+                                              0,
+                                              5
+                                            );
+                                            let owner2 =
+                                              owner.owners[0].slice(38);
+                                            // console.log(owner1)
+                                            return (
+                                              <>
+                                                <h5
+                                                  className="mb-0"
+                                                  key={indexes}
                                                 >
-                                                  {owner1}...{owner2}
-                                                </Link>
-                                              </h5>
-                                            </>
-                                          );
-                                        })}
+                                                  <Link
+                                                    to={`https://etherscan.io/address/${owner.owners[0]}`}
+                                                  >
+                                                    {owner1}...{owner2}
+                                                  </Link>
+                                                </h5>
+                                              </>
+                                            );
+                                          })}
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
                                   </div>
                                   <div className="item2">
                                     <img
@@ -287,164 +330,172 @@ const Item = ({ API, HASH }) => {
                                   </div>
                                   <div>
                                     <div className="Desktop">
-                                    <div className="offerbox">
-                                    {/* {nftsListings[0].map((offerdata, offerIndex) =>{
+                                      <div className="offerbox">
+                                        {/* {nftsListings[0].map((offerdata, offerIndex) =>{
                                       console.log(offerdata)
                                     })} */}
-                                    <div>
-                                      <h5>Current Price</h5>
-                                    </div>
-                                    {noNftsListings ? (
-                                      <>
-                                        {" "}
-                                        <div className="noData">
-                                          <h1>No Data</h1>
-                                        </div>
-                                      </>
-                                    ) : (
-                                      <>
                                         <div>
-                                          <h1>{currentPriceValue} ETH</h1>
+                                          <h5>Current Price</h5>
                                         </div>
-                                        <div>
-                                          {/* <button> */}
-                                          <h4>
-                                            Expires by : {currentTimeValue}{" "}
-                                            {currentDateValue}{" "}
-                                          </h4>
-                                          {/* </button> */}
+                                        {noNftsListings ? (
+                                          <>
+                                            {" "}
+                                            <div className="noData">
+                                              <h1>No Data</h1>
+                                            </div>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <div>
+                                              <h1>{currentPriceValue} ETH</h1>
+                                            </div>
+                                            <div>
+                                              {/* <button> */}
+                                              <h4>
+                                                Expires by : {currentTimeValue}{" "}
+                                                {currentDateValue}{" "}
+                                              </h4>
+                                              {/* </button> */}
+                                            </div>
+                                          </>
+                                        )}
+                                      </div>
+
+                                      <div className="offerbox">
+                                        <div
+                                          className="Listingheader"
+                                          onClick={handlelistingClick}
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <h4>Listings</h4>
                                         </div>
-                                      </>
-                                    )}
-                                  </div>
-
-                                  <div className="offerbox">
-                                    <div
-                                      className="Listingheader"
-                                      onClick={handlelistingClick}
-                                      style={{ cursor: "pointer" }}
-                                    >
-                                      <h4>Listings</h4>
-                                    </div>
-                                    <div
-                                      className={`listingdropdown ${
-                                        islistingExpanded ? "expanded" : ""
-                                      }`}
-                                    >
-                                      {islistingExpanded && (
-                                        <>
-                                          {noNftsListings ? (
+                                        <div
+                                          className={`listingdropdown ${
+                                            islistingExpanded ? "expanded" : ""
+                                          }`}
+                                        >
+                                          {islistingExpanded && (
                                             <>
-                                              <div className="noData">
-                                                <h1>No Data</h1>
-                                              </div>
-                                            </>
-                                          ) : (
-                                            <>
-                                              <hr />
+                                              {noNftsListings ? (
+                                                <>
+                                                  <div className="noData">
+                                                    <h1>No Data</h1>
+                                                  </div>
+                                                </>
+                                              ) : (
+                                                <>
+                                                  <hr />
 
-                                              <div className="detailsContainer">
-                                                <table className="table-container">
-                                                  <thead>
-                                                    <tr>
-                                                      <th>From</th>
-                                                      <th>Price</th>
-                                                      {/* <th>In USD</th> */}
-                                                      <th>Expiration</th>
-                                                      <th>Quantity</th>
-                                                    </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    {nftsListings.map(
-                                                      (data, indexes) => {
-                                                        // console.log(data);
-                                                        const timestamp =
-                                                          data.expiration_timestamp;
-                                                        const date = new Date(
-                                                          timestamp
-                                                        );
+                                                  <div className="detailsContainer">
+                                                    <table className="table-container">
+                                                      <thead>
+                                                        <tr>
+                                                          <th>From</th>
+                                                          <th>Price</th>
+                                                          {/* <th>In USD</th> */}
+                                                          <th>Expiration</th>
+                                                          <th>Quantity</th>
+                                                        </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                        {nftsListings.map(
+                                                          (data, indexes) => {
+                                                            // console.log(data);
+                                                            const timestamp =
+                                                              data.expiration_timestamp;
+                                                            const date =
+                                                              new Date(
+                                                                timestamp
+                                                              );
 
-                                                        // Get the local date string
-                                                        const localDateString =
-                                                          date.toLocaleDateString();
+                                                            // Get the local date string
+                                                            const localDateString =
+                                                              date.toLocaleDateString();
 
-                                                        // Get the local time string
-                                                        const localTimeString =
-                                                          date.toLocaleTimeString();
+                                                            // Get the local time string
+                                                            const localTimeString =
+                                                              date.toLocaleTimeString();
 
-                                                        let sellerAddy1 =
-                                                          data.seller_address.slice(
-                                                            0,
-                                                            5
-                                                          );
-                                                        let sellerAddy2 =
-                                                          data.seller_address.slice(
-                                                            38
-                                                          );
-                                                        let ListingPrice;
-                                                        let ListingPriceValues;
-                                                        let ethh;
-                                                        if (data.price) {
-                                                          ListingPrice =
-                                                            data.price;
+                                                            let sellerAddy1 =
+                                                              data.seller_address.slice(
+                                                                0,
+                                                                5
+                                                              );
+                                                            let sellerAddy2 =
+                                                              data.seller_address.slice(
+                                                                38
+                                                              );
+                                                            let ListingPrice;
+                                                            let ListingPriceValues;
+                                                            let ethh;
+                                                            if (data.price) {
+                                                              ListingPrice =
+                                                                data.price;
 
-                                                          const weiStringValue =
-                                                            ListingPrice.toString();
-                                                          const etherValue =
-                                                            ethers.utils.formatEther(
-                                                              weiStringValue
+                                                              const weiStringValue =
+                                                                ListingPrice.toString();
+                                                              const etherValue =
+                                                                ethers.utils.formatEther(
+                                                                  weiStringValue
+                                                                );
+
+                                                              ListingPriceValues =
+                                                                etherValue;
+                                                              ethh = "ETH";
+                                                            }
+                                                            return (
+                                                              <>
+                                                                <tr>
+                                                                  <td>
+                                                                    {
+                                                                      sellerAddy1
+                                                                    }
+                                                                    ...
+                                                                    {
+                                                                      sellerAddy2
+                                                                    }
+                                                                  </td>
+                                                                  <td>
+                                                                    {
+                                                                      ListingPriceValues
+                                                                    }{" "}
+                                                                    ETH
+                                                                  </td>
+                                                                  <td>
+                                                                    {localDateString +
+                                                                      " " +
+                                                                      localTimeString}
+                                                                  </td>
+                                                                  <td>
+                                                                    {
+                                                                      data.quantity
+                                                                    }
+                                                                  </td>
+                                                                </tr>
+                                                              </>
                                                             );
-
-                                                          ListingPriceValues =
-                                                            etherValue;
-                                                          ethh = "ETH";
-                                                        }
-                                                        return (
-                                                          <>
-                                                            <tr>
-                                                              <td>
-                                                                {sellerAddy1}...
-                                                                {sellerAddy2}
-                                                              </td>
-                                                              <td>
-                                                                {
-                                                                  ListingPriceValues
-                                                                }{" "}
-                                                                ETH
-                                                              </td>
-                                                              <td>
-                                                                {localDateString +
-                                                                  " " +
-                                                                  localTimeString}
-                                                              </td>
-                                                              <td>
-                                                                {data.quantity}
-                                                              </td>
-                                                            </tr>
-                                                          </>
-                                                        );
-                                                      }
-                                                    )}
-                                                  </tbody>
-                                                </table>
-                                              </div>
+                                                          }
+                                                        )}
+                                                      </tbody>
+                                                    </table>
+                                                  </div>
+                                                </>
+                                              )}
                                             </>
                                           )}
-                                        </>
-                                      )}
-                                    </div>
-                                  </div>
+                                        </div>
+                                      </div>
 
-                                  <div className="d-flex Ender">
-                                    <a
-                                      href={`https://opensea.io/assets/ethereum/${contractAddress}/${tokenId}`}
-                                    >
-                                      <button className="btn btn-primary">
-                                        View on OpenSea
-                                      </button>
-                                    </a>
-                                    {/* <NavLink to='' className='btn btn-primary'>Place a Bid</NavLink> */}
-                                  </div>
+                                      <div className="d-flex Ender">
+                                        <a
+                                          href={`https://opensea.io/assets/ethereum/${contractAddress}/${tokenId}`}
+                                        >
+                                          <button className="btn btn-primary">
+                                            View on OpenSea
+                                          </button>
+                                        </a>
+                                        {/* <NavLink to='' className='btn btn-primary'>Place a Bid</NavLink> */}
+                                      </div>
                                     </div>
                                   </div>
                                   <div className="boxbelowimage item1">
@@ -901,7 +952,7 @@ const Item = ({ API, HASH }) => {
                                                       );
                                                     // setEth(etherValue);
                                                     // console.log(etherValue);
-                                                    // etherValues = etherValue;
+                                                    etherValues = etherValue;
                                                     ethhy = "ETH";
                                                   }
 
