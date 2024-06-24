@@ -3,12 +3,30 @@ import { NavLink } from "react-router-dom";
 import { BsFacebook, BsYoutube, BsLinkedin, BsTwitter } from "react-icons/bs";
 import logo from "../images/images/logo.png";
 import logow from "../images/images/logow.png";
+import one from "../images/images/items/one.jpg";
+import two from "../images/images/items/two.jpg";
+import three from "../images/images/items/three.jpg";
+import four from "../images/images/items/four.jpg";
+import five from "../images/images/items/five.jpg";
+import six from "../images/images/items/six.jpg";
+import seven from "../images/images/items/seven.jpg";
+import eight from "../images/images/items/eight.jpg";
+import nine from "../images/images/items/nine.jpg";
 import i from "../images/images/avatar/i.jpg";
+import ii from "../images/images/avatar/ii.jpg";
+import iii from "../images/images/avatar/iii.jpg";
+import iv from "../images/images/avatar/iv.jpg";
+import v from "../images/images/avatar/v.jpg";
+import vi from "../images/images/avatar/vi.jpg";
+import vii from "../images/images/avatar/vii.jpg";
+import viii from "../images/images/avatar/viii.jpg";
+import ix from "../images/images/avatar/ix.jpg";
 import logoh from "../images/images/logoh.png";
 import { useChainId } from "wagmi";
 const Explore = ({ userAddress, HASH }) => {
   const [userNFTdata, setUserNFTdata] = useState([]);
   const [httpsreq, setHttpsreq] = useState("");
+  const [displayedArray, setDisplayedArray] = useState([]);
   const chainid = useChainId();
   // console.log(chainid)
   useEffect(() => {
@@ -49,74 +67,36 @@ const Explore = ({ userAddress, HASH }) => {
     }
     getter();
   }, [httpsreq]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const options = {
+        method: "GET",
+        headers: { accept: "application/json", "X-API-KEY": HASH },
+      };
+      try {
+        // setIsFetchdata(false);
+        const response = await fetch(
+          // `https://api.simplehash.com/api/v0/nfts/collections/marketplace/opensea?chains=ethereum&limit=500`,
+          `https://api.simplehash.com/api/v0/nfts/collections/top_v2?chains=ethereum&time_period=30d&limit=100`,
+          options
+        );
+        const data = await response.json();
+        console.log(data);
+        setDisplayedArray(data.collections);
+        // setIsFetchdata(true);
+        // console.log(data);
+        // console.log(nftsListings[0].price);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <>
       <div className="home" id="main-wrapper">
-        <div className="header landing">
-          <div className="container">
-            <div className="row">
-              <div className="col-xl-12">
-                <div className="navigation">
-                  <nav className="navbar navbar-expand-lg navbar-light">
-                    <div className="brand-logo">
-                      <NavLink to="/">
-                        <img src={logo} alt="" className="logo-primary" />
-                        <img src={logow} alt="" className="logo-white" />
-                      </NavLink>
-                    </div>
-                    <button
-                      className="navbar-toggler"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#navbarSupportedContent"
-                      aria-controls="navbarSupportedContent"
-                      aria-expanded="false"
-                      aria-label="Toggle navigation"
-                    >
-                      <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div
-                      className="collapse navbar-collapse"
-                      id="navbarSupportedContent"
-                    >
-                      <ul className="navbar-nav me-auto">
-                        <li className="nav-item dropdown">
-                          <NavLink className="nav-link" to="/">
-                            Home
-                          </NavLink>
-                        </li>
-                        <li className="nav-item dropdown">
-                          <NavLink className="nav-link" to="/explore">
-                            Explore
-                          </NavLink>
-                        </li>
-                        <li className="nav-item">
-                          <NavLink className="nav-link" to="/collection">
-                            Collection
-                          </NavLink>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="signin-btn d-flex align-items-center">
-                      <div
-                        className="dark-light-toggle theme-switch"
-                        // onClick={themeToggle()}
-                      >
-                        <span className="dark">
-                          <i className="ri-moon-line"></i>
-                        </span>
-                        <span className="light">
-                          <i className="ri-sun-line"></i>
-                        </span>
-                      </div>
-                      {/* <NavLink className="btn btn-primary" to="/signin">Sign in</NavLink> */}
-                    </div>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <br />
         <br />
         <div className="explore section-padding">
@@ -191,65 +171,6 @@ const Explore = ({ userAddress, HASH }) => {
 
               <div className="col-xxl-10 col-xl-9 col-lg-9 col-md-9">
                 <div className="row">
-                  {userNFTdata.map((nftsdata, index) => {
-                    const NftConAddy1 = nftsdata.contract.address.slice(0, 4);
-                    const NftConAddy2 = nftsdata.contract.address.slice(38, 42);
-                    return (
-                      <>
-                        <div
-                          key={index}
-                          className="col-xxl-4 col-xl-4 col-lg-6 col-md-6"
-                        >
-                          <div className="card items">
-                            <div className="card-body">
-                              <div className="items-img position-relative">
-                                <img
-                                  className="img-fluid rounded mb-3"
-                                  src={nftsdata.metadata.image}
-                                  alt=""
-                                />
-                                <NavLink to="/profile">
-                                  <img className="creator" src={i} alt="" />
-                                </NavLink>
-                              </div>
-                              <NavLink to="/item">
-                                <h4 className="card-title">
-                                  {nftsdata.contractMetadata.name}
-                                </h4>
-                              </NavLink>
-                              <p></p>
-                              <div className="d-flex justify-content-between">
-                                <div className="text-start">
-                                  <p className="mb-2">Auction</p>
-                                  <h5 className="text-muted">
-                                    {nftsdata.contractMetadata.tokenType}
-                                  </h5>
-                                </div>
-                                <div className="text-end">
-                                  <p className="mb-2">
-                                    Bid :{" "}
-                                    <strong className="text-primary">
-                                      0.55 ETH
-                                    </strong>
-                                  </p>
-                                  <h5 className="text-muted">
-                                    {" "}
-                                    {NftConAddy1}....{NftConAddy2}{" "}
-                                  </h5>
-                                </div>
-                              </div>
-                              <div className="d-flex justify-content-center mt-3">
-                                <NavLink className="btn btn-primary" to="/item">
-                                  Place a Bid
-                                </NavLink>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
-
                   {/* <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
                     <div className="card items">
                       <div className="card-body">
@@ -287,9 +208,96 @@ const Explore = ({ userAddress, HASH }) => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
+                  {displayedArray.map((nftsdata, index) => {
+                    // const NftConAddy1 = nftsdata.contract.address.slice(0, 4);
+                    // const NftConAddy2 = nftsdata.contract.address.slice(38, 42);
+                    return (
+                      <>
+                        <div
+                          key={index}
+                          className="col-xxl-4 col-xl-4 col-lg-6 col-md-6"
+                        >
+                          <div className="card items">
+                            <div
+                              className="card-body"
+                              style={{ height: "520px" }}
+                            >
+                              <div
+                                className="items-img position-relative"
+                                style={{ height: "330px" }}
+                              >
+                                <div className="br-Red">
+                                  <img
+                                    className="img-fluid rounded mb-3"
+                                    style={{ height: "100%", width: "100%" }}
+                                    src={nftsdata.collection_details.image_url}
+                                    alt=""
+                                  />
+                                </div>
+                                <NavLink to="/profile">
+                                  {/* <img className="creator" src={i} alt="" /> */}
+                                </NavLink>
+                              </div>
+                              <NavLink to="/item">
+                                <h4 className="card-title">
+                                  {/* {nftsdata.contractMetadata.name} */}
+                                </h4>
+                              </NavLink>
+                              <p></p>
+                              <div className="d-flex justify-content-between">
+                                <div className="text-start">
+                                  <p className="mb-2">
+                                    {nftsdata.collection_details.name}
+                                  </p>
+                                  <h5 className="text-muted">
+                                    {/* {nftsdata.contractMetadata.tokenType} */}
+                                  </h5>
+                                </div>
+                                <div className="text-end">
+                                  <p className="mb-2">
+                                    Quantity:{" "}
+                                    <strong className="text-primary">
+                                      {
+                                        nftsdata.collection_details
+                                          .total_quantity
+                                      }
+                                    </strong>
+                                  </p>
+                                  <h5 className="text-muted">
+                                    {" "}
+                                    {/* {NftConAddy1}....{NftConAddy2}{" "} */}
+                                  </h5>
+                                </div>
+                              </div>
+                              {nftsdata.collection_details.marketplace_pages.map(
+                                (direction, indy) => {
+                                  const serachTerm = "opensea";
+                                  if (direction.marketplace_id === serachTerm) {
+                                    return (
+                                      <div
+                                        className="d-flex justify-content-center mt-3"
+                                        key={indy}
+                                      >
+                                        <NavLink
+                                          className="btn btn-primary"
+                                          to={`/collection/${direction.marketplace_collection_id}`}
+                                        >
+                                          View Collection
+                                        </NavLink>
+                                      </div>
+                                    );
+                                  }
+                                }
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })}
 
-                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
+                  {/* <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
                     <div className="card items">
                       <div className="card-body">
                         <div className="items-img position-relative">
@@ -566,8 +574,6 @@ const Explore = ({ userAddress, HASH }) => {
             </div>
           </div>
         </div>
-
-     
       </div>
     </>
   );

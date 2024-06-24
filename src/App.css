@@ -15214,6 +15214,33 @@ button:active,
   margin-top: 10px;
   margin-right: 5px;
 }
+.errorpage{
+  width: 100%;
+  height: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.br-Red{
+  /* border: 1px solid red; */
+  height: 300px;
+  border-radius: 15px;
+}
+.errorcase{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.errorcase h1{
+  font-size: 400px;
+color: #62759d;
+opacity: 0.2;
+}
+.errorcase span{
+  font-size: 30px;
+}
+
 @media (min-width: 769px) {
   
   .Desktop{
@@ -15321,5 +15348,14 @@ button:active,
     flex-direction: column;
     text-align: center;
     align-items: center;
+  }
+  .card-body{
+    height: auto;
+  }
+  .items-img{
+    height: auto;
+  }
+  .br-Red{
+    height: auto;
   }
 }

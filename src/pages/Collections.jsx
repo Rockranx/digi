@@ -146,73 +146,7 @@ const Collections = ({ API, HASH }) => {
   return (
     <>
       <div className="front" id="main-wrapper">
-        <div className="header landing">
-          <div className="container">
-            <div className="row">
-              <div className="col-xl-12">
-                <div className="navigation">
-                  <nav className="navbar navbar-expand-lg navbar-light">
-                    <div className="brand-logo">
-                      <NavLink to="/">
-                        <img src={logo} alt="" className="logo-primary" />
-                        <img src={logow} alt="" className="logo-white" />
-                      </NavLink>
-                    </div>
-                    <button
-                      className="navbar-toggler"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#navbarSupportedContent"
-                      aria-controls="navbarSupportedContent"
-                      aria-expanded="false"
-                      aria-label="Toggle navigation"
-                    >
-                      <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div
-                      className="collapse navbar-collapse"
-                      id="navbarSupportedContent"
-                    >
-                      <ul className="navbar-nav me-auto">
-                        <li className="nav-item dropdown">
-                          <NavLink className="nav-link" to="/">
-                            Home
-                          </NavLink>
-                        </li>
-                        <li className="nav-item dropdown">
-                          <NavLink className="nav-link" to="/explore">
-                            Explore
-                          </NavLink>
-                        </li>
-                        <li className="nav-item">
-                          <NavLink className="nav-link" to="/collection">
-                            Collection
-                          </NavLink>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="signin-btn d-flex align-items-center">
-                      <div
-                        className="dark-light-toggle theme-switch"
-                        // onClick={themeToggle()}
-                      >
-                        <span className="dark">
-                          <i className="ri-moon-line"></i>
-                        </span>
-                        <span className="light">
-                          <i className="ri-sun-line"></i>
-                        </span>
-                      </div>
-                      <NavLink className="btn btn-primary" to="/signin">
-                        Sign in
-                      </NavLink>
-                    </div>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      
         {nftCollectionLoading ? (
           <>
             {" "}
