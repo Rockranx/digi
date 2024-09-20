@@ -43,19 +43,19 @@ const Connect = ({myFunction}) => {
                   >
                     <ul className="navbar-nav me-auto">
                       <li className="nav-item dropdown">
-                        <NavLink className="nav-link" to="/">
+                        {/* <NavLink className="nav-link" to="/">
                           Home
-                        </NavLink>
+                        </NavLink> */}
                       </li>
                       <li className="nav-item dropdown">
-                        <NavLink className="nav-link" to="/explore">
+                        {/* <NavLink className="nav-link" to="/explore">
                           Explore
-                        </NavLink>
+                        </NavLink> */}
                       </li>
                       <li className="nav-item">
-                        <NavLink className="nav-link" to="/collection">
+                        {/* <NavLink className="nav-link" to="/collection">
                           Collection
-                        </NavLink>
+                        </NavLink> */}
                       </li>
                      
                     </ul>
@@ -96,7 +96,7 @@ const Connect = ({myFunction}) => {
                           }
                           return (
                             <>
-                              <button
+                              {/* <button
                                className="btn btn-primary"
                                tabIndex={0}
                                 type="button"
@@ -109,7 +109,7 @@ const Connect = ({myFunction}) => {
                                 {account ?` ${Accountaddress1}...${Accountaddress2} `: "Connect"}
 
                                 <span className="MuiTouchRipple-root mui-style-w0pj6f" />
-                              </button>
+                              </button> */}
                             </>
                           );
                         }}

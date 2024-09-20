@@ -40,6 +40,7 @@ function App() {
   const [banners, setBanners] = useState([]);
   const [trendingData, setTrendingData] = useState([]);
   const [displaydata, setDisplaydata] = useState([]);
+  const [newBanners, setNewBanners] = useState([]);
   const [bannerisLoading, setBannerisLoading] = useState(false);
   const [trendingisLoading, setTrendingisLoading] = useState(false);
   const [trending4NFT, setTrending4NFT] = useState([]);
@@ -94,90 +95,60 @@ function App() {
   const Photograpghy = import.meta.env.VITE_HOME_CATEGORY_PHOTOGRAPHY;
 
   useEffect(() => {
-    async function getter() {
-      const options = {
-        method: "GET",
-        headers: { accept: "application/json" },
-      };
-      try {
-        await fetch(
-          `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getContractMetadata?contractAddress=${ADDRESS1}`,
-          options
-        )
-          .then((response) => response.json())
-          .then((response) => {
-            // // console.log(response);
-            setBanner(response.openSeaMetadata);
-            // console.log(userNFTdata);
-          })
-          .catch((err) => console.error(err));
-      } catch (error) {
-        console.log(error);
-      }
-      try {
-        await fetch(
-          `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getContractMetadata?contractAddress=${ADDRESS2}`,
-          options
-        )
-          .then((response) => response.json())
-          .then((response) => {
-            // // console.log(response);
-            setBanner1(response.openSeaMetadata);
-            // console.log(userNFTdata);
-          })
-          .catch((err) => console.error(err));
-      } catch (error) {
-        console.log(error);
-      }
-      try {
-        await fetch(
-          `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getContractMetadata?contractAddress=${ADDRESS3}`,
-          options
-        )
-          .then((response) => response.json())
-          .then((response) => {
-            // console.log(response);
-            setBanner2(response.openSeaMetadata);
-            // console.log(userNFTdata);
-          })
-          .catch((err) => console.error(err));
-      } catch (error) {
-        console.log(error);
-      }
-      try {
-        await fetch(
-          `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getContractMetadata?contractAddress=${ADDRESS4}`,
-          options
-        )
-          .then((response) => response.json())
-          .then((response) => {
-            // console.log(response);
-            setBanner3(response.openSeaMetadata);
-            // console.log(userNFTdata);
-          })
-          .catch((err) => console.error(err));
-      } catch (error) {
-        console.log(error);
-      }
-      try {
-        await fetch(
-          `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getContractMetadata?contractAddress=${ADDRESS5}`,
-          options
-        )
-          .then((response) => response.json())
-          .then((response) => {
-            // console.log(response);
-            setBanner4(response.openSeaMetadata);
-            // console.log(userNFTdata);
-          })
-          .catch((err) => console.error(err));
-      } catch (error) {
-        console.log(error);
-      }
-      // setBanners([banner, banner1, banner2, banner3, banner4]);
+    async function runnner() {
+      const response1 = await NotableDrops(ADDRESS1);
+      const response2 = await NotableDrops(ADDRESS2);
+      const response3 = await NotableDrops(ADDRESS3);
+      const response4 = await NotableDrops(ADDRESS4);
+      const response5 = await NotableDrops(ADDRESS5);
+      const response6 = await NotableDrops(ADDRESS13);
+      const response7 = await NotableDrops(ADDRESS7);
+      const response8 = await NotableDrops(ADDRESS8);
+      const response9 = await NotableDrops(ADDRESS9);
+      const response10 = await NotableDrops(ADDRESS10);
+      const response11 = await NotableDrops(ADDRESS11);
+      const response12 = await NotableDrops(ADDRESS12);
+      // setNewBanners([response1, response2, response3, response4]);
+
+      const allResponses = [
+        response1,
+        response2,
+        response3,
+        response4,
+        response5,
+        response6,
+        response7,
+        response8,
+        response9,
+        response10,
+        response11,
+        response12,
+      ].flat(); // Assuming each response is an array
+      const selectedBanners = getRandomItems(allResponses, 4);
+
+      setNewBanners([selectedBanners]);
+      // console.log("response1", newBanners)
     }
-    getter();
+    runnner();
   }, []);
+  async function NotableDrops(DropsAddress) {
+    const options = {
+      method: "GET",
+      headers: { accept: "application/json", "X-API-KEY": HASH },
+    };
+    // setTrendingisLoading(false);
+    try {
+      // deal with the chain issue
+      const response = await fetch(
+        `https://api.simplehash.com/api/v0/nfts/collections/ethereum/${DropsAddress}?limit=50`,
+        options
+      );
+      const data = await response.json();
+      return data.collections;
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -204,7 +175,7 @@ function App() {
         // console.log("requested");
         const data = await response.json();
         // console.log(data);
-        setBanners(data.collections);
+        // setBanners(data.collections);
         setBannerisLoading(true);
         // console.log(nftsdetails);
       } catch (error) {
@@ -221,7 +192,7 @@ function App() {
         method: "GET",
         headers: { accept: "application/json", "X-API-KEY": HASH },
       };
-      setTrendingisLoading(false);
+      // setTrendingisLoading(false);
       try {
         // deal with the chain issue
         const response = await fetch(
@@ -229,7 +200,7 @@ function App() {
           options
         );
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setTrendingData(data.collections);
         setTrendingisLoading(true);
       } catch (error) {
@@ -239,14 +210,84 @@ function App() {
 
     fetchData();
   }, []);
+  // TopBanner
+  // TopBanner
+  // TopBanner
+  // TopBanner
+  // Helper function to randomly select two items from an array
+  const getRandomItems = (array, numItems) => {
+    const shuffled = array.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, numItems);
+  };
+
+  useEffect(() => {
+    async function getTopBanner() {
+      setBannerisLoading(false);
+      const response1 = await TopBanner(DISPLAY1);
+      const response2 = await TopBanner(DISPLAY2);
+      const response3 = await TopBanner(DISPLAY3);
+      const response4 = await TopBanner(DISPLAY4);
+      setBanners([response1, response2, response3, response4]);
+      setBannerisLoading(true);
+      // console.log("ba11111ners", banners);
+    }
+    getTopBanner();
+  }, []);
+
+  // useEffect(() => {
+  //   async function getTopBanner() {
+  //     setBannerisLoading(false);
+
+  //     try {
+  //       const response1 = await TopBanner(DISPLAY1);
+  //       const response2 = await TopBanner(DISPLAY2);
+  //       const response3 = await TopBanner(DISPLAY3);
+  //       const response4 = await TopBanner(DISPLAY4);
+
+  //       const allResponses = [response1, response2, response3, response4].flat(); // Assuming each response is an array
+  //       const selectedBanners = getRandomItems(allResponses, 2);
+
+  //       setBanners([selectedBanners]);
+  //       // console.log("banners", selectedBanners)
+  //     } catch (error) {
+  //       console.error("Error fetching top banners:", error);
+  //     } finally {
+  //       setBannerisLoading(true);
+  //     }
+  //   }
+
+  //   getTopBanner();
+  // }, []);
+  // console.log(banners)
+  async function TopBanner(topbanneraddress) {
+    const options = {
+      method: "GET",
+      headers: { accept: "application/json", "X-API-KEY": HASH },
+    };
+    // setTrendingisLoading(false);
+    try {
+      // deal with the chain issue
+      const response = await fetch(
+        `https://api.simplehash.com/api/v0/nfts/collections/ethereum/${topbanneraddress}?limit=1`,
+        options
+      );
+      const data = await response.json();
+      return data.collections;
+      console.log(data);
+      setTrendingData(data.collections);
+      setTrendingisLoading(true);
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  }
 
   useEffect(() => {
     async function fetchData() {
       setBannerisLoading(false);
-      const response1 = await fetchContractMetaData(DISPLAY1);
-      const response2 = await fetchContractMetaData(DISPLAY2);
-      const response3 = await fetchContractMetaData(DISPLAY3);
-      const response4 = await fetchContractMetaData(DISPLAY4);
+      // const response1 = await fetchContractMetaData(DISPLAY1);
+      // const response2 = await fetchContractMetaData(DISPLAY2);
+      // const response3 = await fetchContractMetaData(DISPLAY3);
+      // const response4 = await fetchContractMetaData(DISPLAY4);
       // setBanners([response1, response2, response3, response4]);
       setBannerisLoading(true);
     }
@@ -257,19 +298,19 @@ function App() {
   // TRENDING CODE
   useEffect(() => {
     async function fetchTrendingDatas() {
-      setTrendingisLoading(false);
-      const response1 = await fetchContractMetaData(TopCollection1);
-      const response2 = await fetchContractMetaData(TopCollection2);
-      const response3 = await fetchContractMetaData(TopCollection3);
-      const response4 = await fetchContractMetaData(TopCollection4);
-      const response5 = await fetchContractMetaData(TopCollection5);
-      const response6 = await fetchContractMetaData(TopCollection6);
-      const response7 = await fetchContractMetaData(TopCollection7);
-      const response8 = await fetchContractMetaData(TopCollection8);
-      const response9 = await fetchContractMetaData(TopCollection9);
-      const response10 = await fetchContractMetaData(TopCollection10);
-      const response11 = await fetchContractMetaData(TopCollection11);
-      const response12 = await fetchContractMetaData(TopCollection12);
+      // setTrendingisLoading(false);
+      // const response1 = await fetchContractMetaData(TopCollection1);
+      // const response2 = await fetchContractMetaData(TopCollection2);
+      // const response3 = await fetchContractMetaData(TopCollection3);
+      // const response4 = await fetchContractMetaData(TopCollection4);
+      // const response5 = await fetchContractMetaData(TopCollection5);
+      // const response6 = await fetchContractMetaData(TopCollection6);
+      // const response7 = await fetchContractMetaData(TopCollection7);
+      // const response8 = await fetchContractMetaData(TopCollection8);
+      // const response9 = await fetchContractMetaData(TopCollection9);
+      // const response10 = await fetchContractMetaData(TopCollection10);
+      // const response11 = await fetchContractMetaData(TopCollection11);
+      // const response12 = await fetchContractMetaData(TopCollection12);
 
       // setTrendingData([
       //   response1,
@@ -293,11 +334,33 @@ function App() {
   useEffect(() => {
     async function fetchSpecificNftData() {
       setTrending4NFTLoading(false);
-      const response1 = await fetchSpecificNftMetaData(tokenId);
-      const response2 = await fetchSpecificNftMetaData(tokenId1);
-      const response3 = await fetchSpecificNftMetaData(tokenId2);
-      const response4 = await fetchSpecificNftMetaData(tokenId3);
+      const response1 = await fetchSpecificNftMetaData(ADDRESS1, tokenId);
+      const response2 = await fetchSpecificNftMetaData(ADDRESS2, tokenId1);
+      const response3 = await fetchSpecificNftMetaData(ADDRESS3, tokenId2);
+      const response4 = await fetchSpecificNftMetaData(ADDRESS4, tokenId3);
+      // const response9 = await fetchSpecificNftMetaData(ADDRESS9, tokenId);
+      // const response10 = await fetchSpecificNftMetaData(ADDRESS10, tokenId1);
+      // const response11 = await fetchSpecificNftMetaData(ADDRESS11, tokenId2);
+      // const response12 = await fetchSpecificNftMetaData(ADDRESS12, tokenId3);
       setTrending4NFT([response1, response2, response3, response4]);
+      // const allResponses = [
+      //   response1,
+      //   response2,
+      //   response3,
+      //   response4,
+      //   response5,
+      //   response6,
+      //   response7,
+      //   response8,
+      //   response9,
+      //   response10,
+      //   response11,
+      //   response12,
+      // ].flat(); // Assuming each response is an array
+      // const selectedBanners = getRandomItems(allResponses, 4);
+
+      // setTrending4NFT([selectedBanners]);
+
       setTrending4NFTLoading(true);
       // console.log(trending4NFT)
     }
@@ -309,11 +372,11 @@ function App() {
   useEffect(() => {
     async function fetchCategoryData() {
       setCategoriesLoading(false);
-      const response1 = await fetchContractMetaData(Music);
-      const response2 = await fetchContractMetaData(Gaming);
-      const response3 = await fetchContractMetaData(Photograpghy);
-      const response4 = await fetchContractMetaData(Art);
-      setCategories([response1, response2, response3, response4]);
+      // const response1 = await fetchContractMetaData(Music);
+      // const response2 = await fetchContractMetaData(Gaming);
+      // const response3 = await fetchContractMetaData(Photograpghy);
+      // const response4 = await fetchContractMetaData(Art);
+      // setCategories([response1, response2, response3, response4]);
       setCategoriesLoading(true);
       // console.log(categories);
     }
@@ -321,39 +384,40 @@ function App() {
     fetchCategoryData();
   }, []);
 
-  async function fetchContractMetaData(addresses) {
-    const options = {
-      method: "GET",
-      headers: { accept: "application/json" },
-    };
+  // async function fetchContractMetaData(addresses) {
+  //   const options = {
+  //     method: "GET",
+  //     headers: { accept: "application/json" },
+  //   };
 
-    try {
-      const response = await fetch(
-        `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getContractMetadata?contractAddress=${addresses}`,
-        options
-      );
-      const data = await response.json();
-      // console.log(data)
-      return data.openSeaMetadata;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  }
-  async function fetchSpecificNftMetaData(tokenIds) {
+  //   try {
+  //     const response = await fetch(
+  //       `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getContractMetadata?contractAddress=${addresses}`,
+  //       options
+  //     );
+  //     const data = await response.json();
+  //     // console.log(data)
+  //     return data.openSeaMetadata;
+  //   } catch (error) {
+  //     console.error(error);
+  //     return null;
+  //   }
+  // }
+  async function fetchSpecificNftMetaData(tokenAddress, tokenIds) {
     const options = {
       method: "GET",
-      headers: { accept: "application/json" },
+      headers: { accept: "application/json", "X-API-KEY": HASH },
     };
 
     try {
       const response = await fetch(
         // `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getContractMetadata?contractAddress=${addresses}`,
-        `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getNFTMetadata?contractAddress=0xba265b93519e6473f34f46ee35f4b23970f41a3f&tokenId=${tokenIds}&refreshCache=false`,
+        // `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getNFTMetadata?contractAddress=0xba265b93519e6473f34f46ee35f4b23970f41a3f&tokenId=${tokenIds}&refreshCache=false`,
+        ` https://api.simplehash.com/api/v0/nfts/ethereum/${tokenAddress}/${tokenIds}`,
         options
       );
       const data = await response.json();
-      // console.log(data)
+      // console.log(data);
       return data;
     } catch (error) {
       console.error(error);
@@ -406,6 +470,7 @@ function App() {
                 trending11={trending11}
                 trending12={trending12}
                 HASH={HASH}
+                newBanners={newBanners}
               />
             }
           />

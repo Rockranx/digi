@@ -27,8 +27,12 @@ const Item = ({ API, HASH }) => {
   const [weiValue, setWeiValue] = useState(0);
   const [eth, setEth] = useState(0);
   const [currentPriceValue, setCurrentPriceValue] = useState("");
+
   const [currentDateValue, setCurrentDateValue] = useState("");
   const [currentTimeValue, setCurrentTimeValue] = useState("");
+
+  const [currentDateValue1, setCurrentDateValue1] = useState("");
+  const [currentTimeValue2, setCurrentTimeValue2] = useState("");
 
   // console.log(contractAddress, tokenId);
   useEffect(() => {
@@ -40,10 +44,10 @@ const Item = ({ API, HASH }) => {
         tokenId
       );
       const response2 = await fetchNftOwner(contractAddress, tokenId);
-      // const response3 = await fetchBids(contractAddress, tokenId)
+      const response3 = await fetchTraits(contractAddress, tokenId);
       // console.log("bids", response3)
-      setCurrentNft([response1]);
-      // console.log(response1);
+      setCurrentNft([response2]);
+      console.log("currentNft", response2);
       setTraitsdetails(response1.raw.metadata.attributes);
       if (response1) {
         // console.log(response1);
@@ -78,7 +82,7 @@ const Item = ({ API, HASH }) => {
         );
         // console.log("requested");
         const data = await response.json();
-        // console.log(data);
+        console.log("nftdata", data);
         setNftsdetails(data);
         // console.log(nftsdetails);
       } catch (error) {
@@ -99,21 +103,12 @@ const Item = ({ API, HASH }) => {
       };
       try {
         setIsFetchdata(false);
-        // const response = await fetch(
-        //   `/api/getNftListing/ethereum/${contractAddress}/${tokenId}`,
-        //   {
-        //     headers: {
-        //       Accept: "application/json",
-        //     },
-        //   }
-        //   // `http://localhost:3000/getNftListing/ethereum/${contractAddress}/${tokenId}`
-        // );
         const response = await fetch(
           `https://api.simplehash.com/api/v0/nfts/listings/ethereum/${contractAddress}/${tokenId}?marketplaces=opensea&order_by=listing_timestamp_desc&limit=50`,
           options
         );
         const data = await response.json();
-        // console.log(data)
+        console.log("newdata", data);
         if (data.listings.length === 0) {
           console.log(data.listings.length);
           setNoNftsListings(true);
@@ -219,17 +214,18 @@ const Item = ({ API, HASH }) => {
   async function fetchNftOwner(contractAddress, tokenIds) {
     const options = {
       method: "GET",
-      headers: { accept: "application/json" },
+      headers: { accept: "application/json", "X-API-KEY": HASH },
     };
 
     try {
       const response = await fetch(
-        `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getOwnersForNFT?contractAddress=${contractAddress}&tokenId=${tokenIds}&refreshCache=false`,
+        // `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getOwnersForNFT?contractAddress=${contractAddress}&tokenId=${tokenIds}&refreshCache=false`,
+        ` https://api.simplehash.com/api/v0/nfts/ethereum/${contractAddress}/${tokenIds}`,
         options
       );
       const data = await response.json();
       return data;
-      console.log(data);
+      // console.log("data", data);
     } catch (error) {
       console.error(error);
       return null;
@@ -254,17 +250,38 @@ const Item = ({ API, HASH }) => {
   const handleOfferClick = () => {
     setIsOfferExpanded(!isOfferExpanded);
   };
+  async function fetchTraits(contractAddress, tokenIds) {
+    const options = {
+      method: "GET",
+      headers: { accept: "application/json", "X-API-KEY": HASH },
+    };
+
+    try {
+      const response = await fetch(
+        // `https://eth-mainnet.g.alchemy.com/nft/v3/${API}/getOwnersForNFT?contractAddress=${contractAddress}&tokenId=${tokenIds}&refreshCache=false`,
+        // ` https://api.simplehash.com/api/v0/nfts/ethereum/${contractAddress}/${tokenIds}`,
+        `https://api.simplehash.com/api/v0/nfts/traits/ethereum/${contractAddress}/${tokenIds}/floors`,
+        options
+      );
+      const data = await response.json();
+      // return data;
+      console.log("data", data);
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
   return (
     <>
       <div className="home initDisplay" id="main-wrapper">
         {currentNftLoading ? (
           <>
             {currentNft.map((item, index) => {
-              // console.log(item);
+              console.log("thisis item", item);
               // console.log(item.raw.metadata.attributes);
-              const deployerLink = item.contract.contractDeployer;
-              let deployer1 = item.contract.contractDeployer.slice(0, 5);
-              let deployer2 = item.contract.contractDeployer.slice(38);
+              // const deployerLink = item.contract.contractDeployer;
+              let deployer1 = item.contract.deployed_by.slice(0, 5);
+              let deployer2 = item.contract.deployed_by.slice(38);
 
               return (
                 <>
@@ -279,22 +296,72 @@ const Item = ({ API, HASH }) => {
                                   <div className="Desktop modi">
                                     <h5 className="mb-3">
                                       <Link
-                                        to={`/collection/${item.contract.openSeaMetadata.collectionSlug}`}
+                                      // to={`/collection/${item.contract.openSeaMetadata.collectionSlug}`}
                                       >
                                         {" "}
-                                        {
+                                        {/* {
                                           item.contract.openSeaMetadata
                                             .collectionName
-                                        }{" "}
+                                        } */}{" "}
                                       </Link>
                                     </h5>
-                                    <h3 className="mb-3"> {item.name} </h3>
+                                    <h3 className="mb-3">
+                                      {item.name === null ? (
+                                        <>
+                                          {item.contract.name} #{item.token_id}
+                                        </>
+                                      ) : (
+                                        <>{item.name}</>
+                                      )}
+                                    </h3>
                                     <div className="d-flex align-items-center mb-3">
                                       <div className="flex-grow-1">
                                         <div className="nfttitle">
                                           <h6 className="mb-0">Owner</h6>
-                                          {nftOwner.map((owner, indexes) => {
-                                            // console.log(owner)
+                                          {item.owners === null ? (
+                                            <>
+                                              <div
+                                                style={{
+                                                  textTransform: "capitalize",
+                                                }}
+                                              >
+                                                null
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <>
+                                              {item.owners.map(
+                                                (owner, onwerIndex) => {
+                                                  let owner1 =
+                                                    owner.owner_address.slice(
+                                                      0,
+                                                      5
+                                                    );
+                                                  let owner2 =
+                                                    owner.owner_address.slice(
+                                                      38
+                                                    );
+                                                  return (
+                                                    <>
+                                                      <h5
+                                                        className="mb-0"
+                                                        key={onwerIndex}
+                                                      >
+                                                        <Link
+                                                          to={`https://etherscan.io/address/${owner.owner_address}`}
+                                                        >
+                                                          {owner1}...{owner2}
+                                                        </Link>
+                                                      </h5>
+                                                    </>
+                                                  );
+                                                }
+                                              )}
+                                            </>
+                                          )}
+
+                                          {/* {nftOwner.map((owner, indexes) => {
+                                            console.log(owner)
                                             let owner1 = owner.owners[0].slice(
                                               0,
                                               5
@@ -316,14 +383,14 @@ const Item = ({ API, HASH }) => {
                                                 </h5>
                                               </>
                                             );
-                                          })}
+                                          })} */}
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                   <div className="item2">
                                     <img
-                                      src={item.image.cachedUrl}
+                                      src={item.image_url}
                                       className="img-fluid rounded"
                                       alt="..."
                                     />
@@ -504,12 +571,19 @@ const Item = ({ API, HASH }) => {
                                         <h4>Description</h4>
                                       </div>
                                       <hr />
-                                      <p className="mb-3">
-                                        {
-                                          item.contract.openSeaMetadata
-                                            .description
-                                        }
-                                      </p>
+                                      {item.description !== null ? (
+                                        <>
+                                          <p className="mb-3">
+                                            {item.description}
+                                          </p>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <p className="mb-3">
+                                            {item.collection.description}
+                                          </p>
+                                        </>
+                                      )}
                                     </div>
                                     <div className="traitssection">
                                       <div
@@ -626,7 +700,7 @@ const Item = ({ API, HASH }) => {
                                                 <span>Deployer</span>
                                                 <span>
                                                   <Link
-                                                    to={`https://etherscan.io/address/${item.contract.contractDeployer}`}
+                                                    to={`https://etherscan.io/address/${item.contract.deployed_by}`}
                                                   >
                                                     {deployer1}...{deployer2}
                                                   </Link>
@@ -661,21 +735,69 @@ const Item = ({ API, HASH }) => {
                                 <div className="col-md-6 mobile">
                                   <h5 className="mb-3">
                                     <Link
-                                      to={`/collection/${item.contract.openSeaMetadata.collectionSlug}`}
+                                    // to={`/collection/${item.contract.openSeaMetadata.collectionSlug}`}
                                     >
                                       {" "}
                                       {
-                                        item.contract.openSeaMetadata
-                                          .collectionName
+                                        // item.contract.openSeaMetadata
+                                        //   .collectionName
                                       }{" "}
                                     </Link>
                                   </h5>
-                                  <h3 className="mb-3"> {item.name} </h3>
+                                  <h3 className="mb-3">
+                                    {item.name === null ? (
+                                      <>
+                                        {item.contract.name} #{item.token_id}
+                                      </>
+                                    ) : (
+                                      <>{item.name}</>
+                                    )}
+                                  </h3>
                                   <div className="d-flex align-items-center mb-3">
                                     <div className="flex-grow-1">
                                       <div className="nfttitle">
                                         <h6 className="mb-0">Owner</h6>
-                                        {nftOwner.map((owner, indexes) => {
+                                        {item.owners === null ? (
+                                          <>
+                                            <h5
+                                              style={{
+                                                textTransform: "capitalize",
+                                              }}
+                                              className="mb-0"
+                                            >
+                                              null
+                                            </h5>
+                                          </>
+                                        ) : (
+                                          <>
+                                            {item.owners.map(
+                                              (owner, onwerIndex) => {
+                                                let owner1 =
+                                                  owner.owner_address.slice(
+                                                    0,
+                                                    5
+                                                  );
+                                                let owner2 =
+                                                  owner.owner_address.slice(38);
+                                                return (
+                                                  <>
+                                                    <h5
+                                                      className="mb-0"
+                                                      key={onwerIndex}
+                                                    >
+                                                      <Link
+                                                        to={`https://etherscan.io/address/${owner.owner_address}`}
+                                                      >
+                                                        {owner1}...{owner2}
+                                                      </Link>
+                                                    </h5>
+                                                  </>
+                                                );
+                                              }
+                                            )}
+                                          </>
+                                        )}
+                                        {/* {nftOwner.map((owner, indexes) => {
                                           // console.log(owner)
                                           let owner1 = owner.owners[0].slice(
                                             0,
@@ -698,7 +820,7 @@ const Item = ({ API, HASH }) => {
                                               </h5>
                                             </>
                                           );
-                                        })}
+                                        })} */}
                                       </div>
                                     </div>
                                   </div>
@@ -891,6 +1013,7 @@ const Item = ({ API, HASH }) => {
                                             <tbody>
                                               {transData.map(
                                                 (data, indexes) => {
+                                                  console.log(data);
                                                   const timestamp =
                                                     data.timestamp;
 
@@ -943,7 +1066,12 @@ const Item = ({ API, HASH }) => {
                                                     Price =
                                                       data.sale_details
                                                         .total_price;
-
+                                                    // if(Price !== null){
+                                                    //   setCurrentDateValue1(Price.toString())
+                                                    //   setCurrentTimeValue2(ethers.utils.formatEther(
+                                                    //     currentDateValue1
+                                                    //   ))
+                                                    // }
                                                     const weiStringValue =
                                                       Price.toString();
                                                     const etherValue =

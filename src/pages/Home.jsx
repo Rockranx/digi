@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BiShield } from "react-icons/bi";
-import {
-  BsArrowRight,
-  BsXDiamond,
-  BsCircleHalf,
-} from "react-icons/bs";
+import { BsArrowRight, BsXDiamond, BsCircleHalf } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import { ethers } from "ethers";
 import i from "../images/images/avatar/i.jpg";
@@ -22,31 +18,39 @@ const Home = ({
   categoriesLoading,
   banners,
   trendingData,
+  newBanners,
 }) => {
-  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
-  const [currentBanner, setCurrentBanner] = useState([]);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState([]);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [currentBanner, setCurrentBanner] = useState(banners[0]);
+  const [currentBanner1, setCurrentBanner1] = useState("");
 
   useEffect(() => {
-    if (banners !== null) {
+    if (banners.length > 0) {
       const interval = setInterval(() => {
-        setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
-      }, 5000); // Change the time interval as needed
-      setCurrentBanner(banners[currentBannerIndex]);
+        setCurrentBannerIndex((prevIndex) => {
+          const newIndex = (prevIndex + 1) % banners.length;
+          setCurrentBanner(banners[newIndex]);
+          return newIndex;
+        });
+      }, 10000); // Change the time interval as needed
+
       return () => clearInterval(interval);
     }
-  }, [banners.length]);
+  }, [banners]);
 
   useEffect(() => {
-    if (banners !== null) {
+    setCurrentBanner(banners[currentBannerIndex]);
+    // console.log(currentBanner);
+  }, [currentBannerIndex, banners]);
+  useEffect(() => {
+    if (currentBanner) {
       setOpen(true);
-      setOpen1(banners[currentBannerIndex]);
     } else {
       setOpen(false);
     }
   });
-
   return (
     <>
       <div className="home" id="main-wrapper">
@@ -70,101 +74,83 @@ const Home = ({
                   <>
                     {open ? (
                       <>
-                        {banners[
-                          currentBannerIndex
-                        ].collection_details.marketplace_pages.map(
-                          (ijass, inas) => {
+                        {currentBanner.map((ijass, inas) => {
+                          let directionName;
+                          ijass.marketplace_pages.map((jjggsd, siod) => {
                             const searchTerm = "OpenSea";
-                            if (ijass.marketplace_name === searchTerm) {
-                              let directionName =
-                                ijass.marketplace_collection_id;
-                              return (
-                                <>
-                                  <NavLink to={`/collection/${directionName}`}>
-                                    <div className="intro-slider" key={inas}>
-                                      <div className="slider-item">
+                            if (jjggsd.marketplace_name === searchTerm) {
+                              directionName = jjggsd.marketplace_collection_id;
+                            }
+                          });
+                          return (
+                            <>
+                              <NavLink to={`/collection/${directionName}`}>
+                                <div className="intro-slider" key={inas}>
+                                  <div className="slider-item">
+                                    <img
+                                      src={ijass.banner_image_url}
+                                      alt=""
+                                      className="img-fluid"
+                                    />
+
+                                    <div className="slider-item-avatar">
+                                      <NavLink to={`/collection`}>
+                                        {" "}
                                         <img
-                                          src={
-                                            banners[currentBannerIndex]
-                                              .collection_details
-                                              .banner_image_url
-                                          }
+                                          src={ijass.image_url}
                                           alt=""
-                                          className="img-fluid"
-                                        />
+                                        />{" "}
+                                      </NavLink>
+                                      {/* deal with the to in navlink */}
+                                      <div>
+                                        <h5>{ijass.name}</h5>
+                                        {ijass.floor_prices.map(
+                                          (ijas1, inas) => {
+                                            const searchTerm = "OpenSea";
 
-                                        <div className="slider-item-avatar">
-                                          <NavLink
-                                            to={`/collection/${directionName}`}
-                                          >
-                                            {" "}
-                                            <img
-                                              src={
-                                                banners[currentBannerIndex]
-                                                  .collection_details.image_url
-                                              }
-                                              alt=""
-                                            />{" "}
-                                          </NavLink>
-                                          {/* deal with the to in navlink */}
-                                          <div>
-                                            <h5>
-                                              {
-                                                banners[currentBannerIndex]
-                                                  .collection_details.name
-                                              }
-                                            </h5>
-                                            {banners[
-                                              currentBannerIndex
-                                            ].collection_details.floor_prices.map(
-                                              (ijas, inas) => {
-                                                const searchTerm = "OpenSea";
+                                            if (
+                                              ijas1.marketplace_name ===
+                                              searchTerm
+                                            ) {
+                                              let Price;
+                                              let etherValues;
+                                              let ethhy;
+                                              // let directionName1 = ijas.marketplace_collection_id;
+                                              if (ijas1 !== null) {
+                                                Price = ijas1.value;
 
-                                                if (
-                                                  ijas.marketplace_name ===
-                                                  searchTerm
-                                                ) {
-                                                  let Price;
-                                                  let etherValues;
-                                                  let ethhy;
-                                                  // let directionName1 = ijas.marketplace_collection_id;
-                                                  if (ijas !== null) {
-                                                    Price = ijas.value;
-
-                                                    const weiStringValue =
-                                                      Price.toString();
-                                                    const etherValue =
-                                                      ethers.utils.formatEther(
-                                                        weiStringValue
-                                                      );
-                                                    etherValues = etherValue;
-                                                    ethhy = "ETH";
-                                                  }
-                                                  return (
-                                                    <div>
-                                                      <span>
-                                                        {ijas.marketplace_name}:{" "}
-                                                        {etherValues} {ethhy}
-                                                      </span>
-                                                    </div>
+                                                const weiStringValue =
+                                                  Price.toString();
+                                                const etherValue =
+                                                  ethers.utils.formatEther(
+                                                    weiStringValue
                                                   );
-                                                } else {
-                                                  // Return null if the item does not match the search term
-                                                  return null;
-                                                }
+                                                etherValues = etherValue;
+                                                ethhy = "ETH";
                                               }
-                                            )}
-                                          </div>
-                                        </div>
+                                              return (
+                                                <div key={inas}>
+                                                  <span>
+                                                    {ijas1.marketplace_name}:{" "}
+                                                    {etherValues} {ethhy}
+                                                  </span>
+                                                </div>
+                                              );
+                                            } else {
+                                              // Return null if the item does not match the search term
+                                              return null;
+                                            }
+                                          }
+                                        )}
                                       </div>
                                     </div>
-                                  </NavLink>
-                                </>
-                              );
-                            }
-                            return <></>;
-                          }
-                        )}
+                                  </div>
+                                </div>
+                              </NavLink>
+                            </>
+                          );
+                          return <></>;
+                        })}
                       </>
                     ) : (
                       <>
@@ -199,110 +185,64 @@ const Home = ({
             </div>
 
             <div className="row">
-              <div className="col-xl-3 col-lg-6 col-md-6">
-                <div className="card">
-                  <img
-                    className="img-fluid card-img-top"
-                    src={banner1.bannerImageUrl}
-                    alt=""
-                  />
-                  <div className="card-body mobycard">
-                    <div className="notable-drops-content-img"></div>
-                    <h4 className="card-title">{banner1.collectionName}</h4>
-                    {/* <p>Make your offers before 12pm EST Nov 29th</p> */}
-                    <NavLink
-                      to={`/collection/${banner1.collectionSlug}`}
-                      style={{
-                        display: "flex",
-                        width: "90px",
-                        alignItems: "center",
-                        justifyContent: "space-evenly",
-                      }}
-                    >
-                      Explore
-                      <BsArrowRight />
-                    </NavLink>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-xl-3 col-lg-6 col-md-6">
-                <div className="card">
-                  <img
-                    className="img-fluid card-img-top"
-                    src={banner2.bannerImageUrl}
-                    alt=""
-                  />
-                  <div className="card-body mobycard">
-                    <div className="notable-drops-content-img"></div>
-                    <h4 className="card-title">{banner2.collectionName}</h4>
-                    <NavLink
-                      to={`/collection/${banner2.collectionSlug}`}
-                      style={{
-                        display: "flex",
-                        width: "90px",
-                        alignItems: "center",
-                        justifyContent: "space-evenly",
-                      }}
-                    >
-                      Explore
-                      <BsArrowRight />
-                    </NavLink>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-xl-3 col-lg-6 col-md-6">
-                <div className="card">
-                  <img
-                    className="img-fluid card-img-top"
-                    src={banner3.bannerImageUrl}
-                    alt=""
-                  />
-                  <div className="card-body mobycard">
-                    <div className="notable-drops-content-img"></div>
-                    <h4 className="card-title">{banner3.collectionName}</h4>
-                    <NavLink
-                      to={`/collection/${banner3.collectionSlug}`}
-                      style={{
-                        display: "flex",
-                        width: "90px",
-                        alignItems: "center",
-                        justifyContent: "space-evenly",
-                      }}
-                    >
-                      Explore
-                      <BsArrowRight />
-                    </NavLink>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-xl-3 col-lg-6 col-md-6">
-                <div className="card">
-                  <img
-                    className="img-fluid card-img-top"
-                    src={banner4.bannerImageUrl}
-                    alt=""
-                  />
-                  <div className="card-body mobycard">
-                    <div className="notable-drops-content-img"></div>
-                    <h4 className="card-title">{banner4.collectionName}</h4>
-                    <NavLink
-                      to={`/collection/${banner4.collectionSlug}`}
-                      style={{
-                        display: "flex",
-                        width: "90px",
-                        alignItems: "center",
-                        justifyContent: "space-evenly",
-                      }}
-                    >
-                      Explore
-                      <BsArrowRight />
-                    </NavLink>
-                  </div>
-                </div>
-              </div>
+              {newBanners.map((item, index) => {
+                // console.log(item)
+                return (
+                  <>
+                    {item.map((newItem, newIndex) => {
+                      // console.log(newItem);
+                      return (
+                        <>
+                          <div
+                            className="col-xl-3 col-lg-6 col-md-6"
+                            key={newIndex}
+                          >
+                            <div className="card">
+                              <img
+                                className="img-fluid card-img-top"
+                                src={newItem.banner_image_url}
+                                alt=""
+                              />
+                              <div className="card-body mobycard">
+                                <div className="notable-drops-content-img"></div>
+                                <h4 className="card-title">{newItem.name}</h4>
+                                {/* <p>Make your offers before 12pm EST Nov 29th</p> */}
+                                {newItem.marketplace_pages.map(
+                                  (marId, marIndex) => {
+                                    const searchTerm = "OpenSea";
+                                    if (marId.marketplace_name === searchTerm) {
+                                      let directionName =
+                                        marId.marketplace_collection_id;
+                                      return (
+                                        <>
+                                          <div key={marIndex}>
+                                            <NavLink
+                                              to={`/collection/${directionName}`}
+                                              style={{
+                                                display: "flex",
+                                                width: "90px",
+                                                alignItems: "center",
+                                                justifyContent: "space-evenly",
+                                              }}
+                                            >
+                                              Explore
+                                              <BsArrowRight />
+                                            </NavLink>
+                                          </div>
+                                        </>
+                                      );
+                                    }
+                                  }
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+                  </>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -436,33 +376,46 @@ const Home = ({
               {trending4NFTLoading ? (
                 <>
                   {trending4NFT.map((item, index) => {
+                    // console.log("item", item);
+                    let directionName;
+                    item.collection.marketplace_pages.map((jjggsd, siod) => {
+                      const searchTerm = "OpenSea";
+                      if (jjggsd.marketplace_name === searchTerm) {
+                        directionName = jjggsd.marketplace_collection_id;
+                      }
+                    });
                     return (
                       <div className="col-xl-3 col-lg-6 col-md-6" key={index}>
                         <div className="card items">
                           <div className="card-body">
                             <div className="items-img position-relative">
                               <img
-                                src={item.image.cachedUrl}
+                                src={item.image_url}
                                 className="img-fluid rounded mb-3"
                                 alt=""
                               />
                               <NavLink
-                                to={`/item/${item.contract.address}/${item.tokenId}`}
+                                to={`/item/${item.contract_address}/${item.token_id}`}
                               >
                                 <img
                                   className="creator"
-                                  src={i}
+                                  src={item.collection.image_url}
                                   width="50"
                                   alt=""
                                 />
                               </NavLink>
                             </div>
                             <NavLink
-                              to={`/item/${item.contract.address}/${item.tokenId}`}
+                              to={`/item/${item.contract_address}/${item.token_id}`}
                             >
+                                <NavLink
+                                  // style={{ color: "#152c5b" }}
+                                  to={`/collection/${directionName}`}
+                                >
                               <h4 className="card-title">
-                                {item.collection.name}
+                                  {item.collection.name}
                               </h4>
+                                </NavLink>
                             </NavLink>
                             <p></p>
                             <div className="d-flex justify-content-between">
@@ -472,7 +425,7 @@ const Home = ({
                               <div className="text-end">
                                 <p className="mb-2">
                                   <strong className="text-primary">
-                                    {item.tokenId}
+                                    {item.token_id}
                                   </strong>
                                 </p>
                                 <h5 className="text-muted"></h5>
@@ -481,7 +434,7 @@ const Home = ({
                             <div className="d-flex justify-content-center mt-3">
                               <NavLink
                                 className="btn btn-primary"
-                                to={`/item/${item.contract.address}/${item.tokenId}`}
+                                to={`/item/${item.contract_address}/${item.token_id}`}
                               >
                                 View Item
                               </NavLink>
@@ -527,10 +480,7 @@ const Home = ({
                       Digital Eden by clicking the wallet icon in the top right
                       corner. Learn about the wallets we support.
                     </p>
-                    <NavLink to="/explore">
-                      Explore
-                      <BsArrowRight />
-                    </NavLink>
+                   
                   </div>
                 </div>
               </div>
@@ -547,10 +497,7 @@ const Home = ({
                       social links, a description, profile &amp; banner images,
                       and set a secondary sales fee.
                     </p>
-                    <NavLink to="/explore">
-                      Explore
-                      <BsArrowRight />
-                    </NavLink>
+                   
                   </div>
                 </div>
               </div>
@@ -567,10 +514,7 @@ const Home = ({
                       title and description, and customize your NFTs with
                       properties, stats, and unlockable content.
                     </p>
-                    <NavLink to="/explore">
-                      Explore
-                      <BsArrowRight />
-                    </NavLink>
+                   
                   </div>
                 </div>
               </div>
@@ -587,10 +531,7 @@ const Home = ({
                       declining-price listings. You choose how you want to sell
                       your NFTs, and we help you sell them!
                     </p>
-                    <NavLink to="/explore">
-                      Explore
-                      <BsArrowRight />
-                    </NavLink>
+                    
                   </div>
                 </div>
               </div>
@@ -598,7 +539,7 @@ const Home = ({
           </div>
         </div>
 
-        <div className="browse-category section-padding border-top">
+        {/* <div className="browse-category section-padding border-top">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-xl-8">
@@ -617,7 +558,7 @@ const Home = ({
                     <div className="card browse-cat">
                       <img
                         className="img-fluid card-img-top"
-                        src={categories[0].bannerImageUrl}
+                        // src={categories[0].bannerImageUrl}
                         alt=""
                       />
                       <div className="card-body">
@@ -630,7 +571,7 @@ const Home = ({
                     <div className="card browse-cat">
                       <img
                         className="img-fluid card-img-top"
-                        src={categories[1].bannerImageUrl}
+                        // src={categories[1].bannerImageUrl}
                         alt=""
                       />
                       <div className="card-body">
@@ -643,7 +584,7 @@ const Home = ({
                     <div className="card browse-cat">
                       <img
                         className="img-fluid card-img-top"
-                        src={categories[2].bannerImageUrl}
+                        // src={categories[2].bannerImageUrl}
                         alt=""
                       />
                       <div className="card-body">
@@ -655,7 +596,7 @@ const Home = ({
                     <div className="card browse-cat">
                       <img
                         className="img-fluid card-img-top"
-                        src={categories[3].bannerImageUrl}
+                        // src={categories[3].bannerImageUrl}
                         alt=""
                       />
                       <div className="card-body">
@@ -671,7 +612,7 @@ const Home = ({
               </>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

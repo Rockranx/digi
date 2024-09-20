@@ -210,7 +210,7 @@ const Footer = () => {
                 <div className="copyright">
                   <p>
                     {" "}
-                    © Copyright 2022
+                    © Copyright 2024
                     <NavLink to="/"> Digital eden</NavLink>
                     <br />
                     All Rights Reserved

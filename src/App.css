@@ -15096,7 +15096,8 @@ button:active,
   width: 100%;
   height: auto;
   padding: 5px;
-  border: 1px solid #2c4056;
+  border-bottom: 1px solid #2c4056;
+  border-top: 1px solid #2c4056;
 }
 
 .traitsdropdown {
