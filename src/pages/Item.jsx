@@ -296,13 +296,8 @@ const Item = ({ API, HASH }) => {
                                   <div className="Desktop modi">
                                     <h5 className="mb-3">
                                       <Link
-                                      // to={`/collection/${item.contract.openSeaMetadata.collectionSlug}`}
                                       >
-                                        {" "}
-                                        {/* {
-                                          item.contract.openSeaMetadata
-                                            .collectionName
-                                        } */}{" "}
+                                      
                                       </Link>
                                     </h5>
                                     <h3 className="mb-3">
@@ -360,30 +355,7 @@ const Item = ({ API, HASH }) => {
                                             </>
                                           )}
 
-                                          {/* {nftOwner.map((owner, indexes) => {
-                                            console.log(owner)
-                                            let owner1 = owner.owners[0].slice(
-                                              0,
-                                              5
-                                            );
-                                            let owner2 =
-                                              owner.owners[0].slice(38);
-                                            // console.log(owner1)
-                                            return (
-                                              <>
-                                                <h5
-                                                  className="mb-0"
-                                                  key={indexes}
-                                                >
-                                                  <Link
-                                                    to={`https://etherscan.io/address/${owner.owners[0]}`}
-                                                  >
-                                                    {owner1}...{owner2}
-                                                  </Link>
-                                                </h5>
-                                              </>
-                                            );
-                                          })} */}
+                                         
                                         </div>
                                       </div>
                                     </div>
@@ -398,9 +370,7 @@ const Item = ({ API, HASH }) => {
                                   <div>
                                     <div className="Desktop">
                                       <div className="offerbox">
-                                        {/* {nftsListings[0].map((offerdata, offerIndex) =>{
-                                      console.log(offerdata)
-                                    })} */}
+                                      
                                         <div>
                                           <h5>Current Price</h5>
                                         </div>
@@ -417,12 +387,12 @@ const Item = ({ API, HASH }) => {
                                               <h1>{currentPriceValue} ETH</h1>
                                             </div>
                                             <div>
-                                              {/* <button> */}
+                                             
                                               <h4>
                                                 Expires by : {currentTimeValue}{" "}
                                                 {currentDateValue}{" "}
                                               </h4>
-                                              {/* </button> */}
+                                              
                                             </div>
                                           </>
                                         )}
@@ -459,7 +429,7 @@ const Item = ({ API, HASH }) => {
                                                         <tr>
                                                           <th>From</th>
                                                           <th>Price</th>
-                                                          {/* <th>In USD</th> */}
+                                                       
                                                           <th>Expiration</th>
                                                           <th>Quantity</th>
                                                         </tr>
@@ -561,7 +531,6 @@ const Item = ({ API, HASH }) => {
                                             View on OpenSea
                                           </button>
                                         </a>
-                                        {/* <NavLink to='' className='btn btn-primary'>Place a Bid</NavLink> */}
                                       </div>
                                     </div>
                                   </div>
@@ -623,7 +592,6 @@ const Item = ({ API, HASH }) => {
                                                                   details.trait_type
                                                                 }
                                                               </h5>
-                                                              {/* <p>0.05 ETH</p> */}
                                                             </div>
 
                                                             <div className="text-center">
@@ -713,35 +681,14 @@ const Item = ({ API, HASH }) => {
                                     </div>
                                   </div>
 
-                                  {/* <div
-                                    className="flex-grow-1"
-                                    style={{
-                                      display: "flex",
-                                      flexDirection: "column",
-                                      alignItems: "flex-end",
-                                    }}
-                                  >
-                                    <h6 className="mb-0">Deployer</h6>
-                                    <h5 className="mb-0">
-                                      <Link
-                                        to={`https://etherscan.io/address/${item.contract.contractDeployer}`}
-                                      >
-                                        {deployer1}...{deployer2}
-                                      </Link>
-                                    </h5>
-                                  </div> */}
+                                 
                                 </div>
 
                                 <div className="col-md-6 mobile">
                                   <h5 className="mb-3">
                                     <Link
-                                    // to={`/collection/${item.contract.openSeaMetadata.collectionSlug}`}
                                     >
-                                      {" "}
-                                      {
-                                        // item.contract.openSeaMetadata
-                                        //   .collectionName
-                                      }{" "}
+                                    
                                     </Link>
                                   </h5>
                                   <h3 className="mb-3">
@@ -797,37 +744,12 @@ const Item = ({ API, HASH }) => {
                                             )}
                                           </>
                                         )}
-                                        {/* {nftOwner.map((owner, indexes) => {
-                                          // console.log(owner)
-                                          let owner1 = owner.owners[0].slice(
-                                            0,
-                                            5
-                                          );
-                                          let owner2 =
-                                            owner.owners[0].slice(38);
-                                          // console.log(owner1)
-                                          return (
-                                            <>
-                                              <h5
-                                                className="mb-0"
-                                                key={indexes}
-                                              >
-                                                <Link
-                                                  to={`https://etherscan.io/address/${owner.owners[0]}`}
-                                                >
-                                                  {owner1}...{owner2}
-                                                </Link>
-                                              </h5>
-                                            </>
-                                          );
-                                        })} */}
+                                     
                                       </div>
                                     </div>
                                   </div>
                                   <div className="offerbox">
-                                    {/* {nftsListings[0].map((offerdata, offerIndex) =>{
-                                      console.log(offerdata)
-                                    })} */}
+                                 
                                     <div>
                                       <h5>Current Price</h5>
                                     </div>
@@ -844,12 +766,12 @@ const Item = ({ API, HASH }) => {
                                           <h1>{currentPriceValue} ETH</h1>
                                         </div>
                                         <div>
-                                          {/* <button> */}
+                                      
                                           <h4>
                                             Expires by : {currentTimeValue}{" "}
                                             {currentDateValue}{" "}
                                           </h4>
-                                          {/* </button> */}
+                                         
                                         </div>
                                       </>
                                     )}
@@ -886,7 +808,7 @@ const Item = ({ API, HASH }) => {
                                                     <tr>
                                                       <th>From</th>
                                                       <th>Price</th>
-                                                      {/* <th>In USD</th> */}
+                                                     
                                                       <th>Expiration</th>
                                                       <th>Quantity</th>
                                                     </tr>
@@ -980,7 +902,6 @@ const Item = ({ API, HASH }) => {
                                         View on OpenSea
                                       </button>
                                     </a>
-                                    {/* <NavLink to='' className='btn btn-primary'>Place a Bid</NavLink> */}
                                   </div>
                                 </div>
 

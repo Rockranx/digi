@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
-import logo from "../images/images/logo.png";
-import logow from "../images/images/logow.png";
 import { FaDiscord, FaSquareXTwitter } from "react-icons/fa6";
 import Loader from "./buttons&loaders/Loader";
 import Web3 from "web3";
@@ -29,7 +27,6 @@ const Collections = ({ API, HASH }) => {
       setDeploycontract(response1.nfts[0].contract.address);
 
       setCurrentNftCollection([response1.nfts]);
-      // console.log(currentNftCollection);
       setNftCollectionBanner([response1.nfts[0]]);
       setDisablePrev(currentPage === 1);
       setDisableNext(response1.nfts.length < 100);
@@ -40,7 +37,6 @@ const Collections = ({ API, HASH }) => {
     fetchNftCollectionData();
   }, [collectionSlug, currentPage]);
 
-  // console.log(currentPage);
   async function fetchNftCollection(collectionSlug, page) {
     const options = {
       method: "GET",
@@ -74,7 +70,7 @@ const Collections = ({ API, HASH }) => {
           options
         );
         const data = await response.json();
-        // console.log(data)
+
         setTotalSupplys(data.totalSupply);
       } catch (error) {
         console.error(error);
@@ -119,10 +115,8 @@ const Collections = ({ API, HASH }) => {
       }
     });
 
-    // Start observing changes in the body's class list
     observer.observe(document.body, { attributes: true });
 
-    // Cleanup function
     return () => {
       observer.disconnect();
     };
@@ -132,9 +126,9 @@ const Collections = ({ API, HASH }) => {
     try {
       const block = await web3.eth.getBlock(blockNumber);
       if (block) {
-        const timestamp = Number(block.timestamp) * 1000; // Convert to number and multiply by 1000
+        const timestamp = Number(block.timestamp) * 1000;
         const date = new Date(timestamp);
-        return date.toISOString(); // Convert date to ISO string
+        return date.toISOString();
       } else {
         throw new Error("Block not found");
       }
@@ -146,26 +140,20 @@ const Collections = ({ API, HASH }) => {
   return (
     <>
       <div className="front" id="main-wrapper">
-      
         {nftCollectionLoading ? (
           <>
             {" "}
             {currentNftCollection.map((item, index) => {
-              // console.log(item.length)
-              // console.log(item[0]);
               getBlockTimestamp(item[0].contract.deployedBlockNumber)
                 .then((date) => {
-                  // console.log("Block timestamp:", date);
                   const timestamp = new Date(date);
                   const monthYear = timestamp.toLocaleString("en-US", {
                     month: "long",
                     year: "numeric",
                   });
                   setDeploydate(monthYear);
-                  // console.log(monthYear);
                 })
                 .catch((error) => console.error("Error:", error));
-              // setNftCollectionBanner(item[0].collection.bannerImageUrl)
               const imageUrls = item[0].collection.bannerImageUrl;
               let conAddy = item[0].contract.address.slice(0, 4);
               let conAddy2 = item[0].contract.address.slice(38);
@@ -195,7 +183,6 @@ const Collections = ({ API, HASH }) => {
                             <img
                               src={item[0].contract.openSeaMetadata.imageUrl}
                               alt="Image Icon"
-                              
                             />
                           </div>
                           <div className="collectionTitle">
@@ -203,7 +190,7 @@ const Collections = ({ API, HASH }) => {
                               {item[0].contract.openSeaMetadata.collectionName}
                             </span>
                             <div className="deployer">
-                              {/* <span>Deployer</span> */}
+                              
                               <span style={{ marginLeft: "5px" }}>
                                 {" "}
                                 {conAddy}...{conAddy2}
@@ -272,7 +259,7 @@ const Collections = ({ API, HASH }) => {
 
                             <div className="row">
                               {item.map((ith, indexs) => {
-                                console.log(ith); 
+                                console.log(ith);
                                 return (
                                   <>
                                     <div
@@ -296,42 +283,14 @@ const Collections = ({ API, HASH }) => {
                                           </div>
                                           <NavLink to="/item">
                                             <div className="itemTitle">
-
-                                            <h4 className="card-title">
-                                              {ith.collection.name} #{ith.tokenId}
-                                            </h4>
-                                            {/* <div className="tokenId">
-
-                                            <h4 className="card-title">
-                                              Token Id:
-                                            </h4>
-                                            <h4 className="card-title">
-                                              {ith.tokenId}
-                                            </h4>
-                                            </div> */}
+                                              <h4 className="card-title">
+                                                {ith.collection.name} #
+                                                {ith.tokenId}
+                                              </h4>
+                                           
                                             </div>
                                           </NavLink>
-                                          {/* <div className="d-flex justify-content-between">
-                                            <div className="text-start">
-                                              <p className="mb-2">Auction</p>
-                                              <h5 className="text-muted">
-                                                3h 1m 50s
-                                              </h5>
-                                            </div>
-
-                                            <div className="text-end">
-                                              <p className="mb-2">
-                                                Bid :
-                                                <strong className="text-primary">
-                                                  0.15 ETH
-                                                </strong>
-                                              </p>
-                                              <h5 className="text-muted">
-                                                {" "}
-                                                0.15ETH
-                                              </h5>
-                                            </div>
-                                          </div> */}
+                                         
                                           <div className="d-flex justify-content-center mt-3">
                                             <NavLink
                                               className="btn btn-primary"

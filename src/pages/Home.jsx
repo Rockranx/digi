@@ -34,7 +34,7 @@ const Home = ({
           setCurrentBanner(banners[newIndex]);
           return newIndex;
         });
-      }, 10000); // Change the time interval as needed
+      }, 10000);
 
       return () => clearInterval(interval);
     }
@@ -42,7 +42,7 @@ const Home = ({
 
   useEffect(() => {
     setCurrentBanner(banners[currentBannerIndex]);
-    // console.log(currentBanner);
+   
   }, [currentBannerIndex, banners]);
   useEffect(() => {
     if (currentBanner) {
@@ -101,7 +101,6 @@ const Home = ({
                                           alt=""
                                         />{" "}
                                       </NavLink>
-                                      {/* deal with the to in navlink */}
                                       <div>
                                         <h5>{ijass.name}</h5>
                                         {ijass.floor_prices.map(
@@ -115,7 +114,6 @@ const Home = ({
                                               let Price;
                                               let etherValues;
                                               let ethhy;
-                                              // let directionName1 = ijas.marketplace_collection_id;
                                               if (ijas1 !== null) {
                                                 Price = ijas1.value;
 
@@ -137,7 +135,6 @@ const Home = ({
                                                 </div>
                                               );
                                             } else {
-                                              // Return null if the item does not match the search term
                                               return null;
                                             }
                                           }
@@ -186,11 +183,11 @@ const Home = ({
 
             <div className="row">
               {newBanners.map((item, index) => {
-                // console.log(item)
+             
                 return (
                   <>
                     {item.map((newItem, newIndex) => {
-                      // console.log(newItem);
+                  
                       return (
                         <>
                           <div
@@ -206,7 +203,6 @@ const Home = ({
                               <div className="card-body mobycard">
                                 <div className="notable-drops-content-img"></div>
                                 <h4 className="card-title">{newItem.name}</h4>
-                                {/* <p>Make your offers before 12pm EST Nov 29th</p> */}
                                 {newItem.marketplace_pages.map(
                                   (marId, marIndex) => {
                                     const searchTerm = "OpenSea";
@@ -327,7 +323,6 @@ const Home = ({
                                                 </div>
                                               );
                                             } else {
-                                              // Return null if the item does not match the search term
                                               return null;
                                             }
                                           }
@@ -376,7 +371,6 @@ const Home = ({
               {trending4NFTLoading ? (
                 <>
                   {trending4NFT.map((item, index) => {
-                    // console.log("item", item);
                     let directionName;
                     item.collection.marketplace_pages.map((jjggsd, siod) => {
                       const searchTerm = "OpenSea";
@@ -409,7 +403,6 @@ const Home = ({
                               to={`/item/${item.contract_address}/${item.token_id}`}
                             >
                                 <NavLink
-                                  // style={{ color: "#152c5b" }}
                                   to={`/collection/${directionName}`}
                                 >
                               <h4 className="card-title">
@@ -539,80 +532,7 @@ const Home = ({
           </div>
         </div>
 
-        {/* <div className="browse-category section-padding border-top">
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-xl-8">
-                <div className="section-title text-center">
-                  <h2>Browse by category</h2>
-                  <p>
-                    Here are a few reasons why you should choose Digital Eden
-                  </p>
-                </div>
-              </div>
-            </div>
-            {categoriesLoading ? (
-              <>
-                <div className="row">
-                  <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div className="card browse-cat">
-                      <img
-                        className="img-fluid card-img-top"
-                        // src={categories[0].bannerImageUrl}
-                        alt=""
-                      />
-                      <div className="card-body">
-                        <h4>Music</h4>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div className="card browse-cat">
-                      <img
-                        className="img-fluid card-img-top"
-                        // src={categories[1].bannerImageUrl}
-                        alt=""
-                      />
-                      <div className="card-body">
-                        <h4>Gaming</h4>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div className="card browse-cat">
-                      <img
-                        className="img-fluid card-img-top"
-                        // src={categories[2].bannerImageUrl}
-                        alt=""
-                      />
-                      <div className="card-body">
-                        <h4>Photographgy</h4>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div className="card browse-cat">
-                      <img
-                        className="img-fluid card-img-top"
-                        // src={categories[3].bannerImageUrl}
-                        alt=""
-                      />
-                      <div className="card-body">
-                        <h4>Art</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <Loader />
-              </>
-            )}
-          </div>
-        </div> */}
+        
       </div>
     </>
   );

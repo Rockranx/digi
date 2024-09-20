@@ -39,7 +39,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains} theme={darkTheme()}>
-        {/* <Home  isConnected={isConnected} connectWallet={connectWallet} /> */}
         <App />
       </RainbowKitProvider>
     </WagmiConfig>
