@@ -281,7 +281,7 @@ const Collections = ({ API, HASH }) => {
                                               alt=""
                                             />
                                           </div>
-                                          <NavLink to="/item">
+                                          <NavLink >
                                             <div className="itemTitle">
                                               <h4 className="card-title">
                                                 {ith.collection.name} #
